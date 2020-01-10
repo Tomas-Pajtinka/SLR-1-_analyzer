@@ -20,11 +20,17 @@ public class State implements interfaces.State{
 	 * * @return gramatika
 	 **/
 	public State(int name, ArrayList<Rule_in_State> rules, ContextFreeGrammar grammar){
-
+		this.name = name;
+		this.rules = rules;
+		this.grammar = grammar;
 	}
 	
 	public void add_switch(String symbol, State state) throws Exception{
-
+		if(switches.containsKey(symbol)){
+			throw new Exception("Rovnky prechod uz existuje.");
+		}else{
+			switches.put(symbol, state);
+		}
 	}
 	
 	public HashMap<String,ArrayList<Rule_in_State>> get_rules_of_next_state() throws Exception{
