@@ -122,10 +122,36 @@ public class State implements interfaces.State{
 	}
 	
 	public boolean contains_switch(String symbol){
-		return false;
+		return switches.containsKey(symbol);
 	}
 	
 	public HashMap<String,Rule> get_rules_to_action() throws Exception{
-		return null;
+		HashMap<String,Rule> return_rules = new HashMap<String,Rule>();
+		Iterator<Rule_in_State> this_rules = rules.iterator();
+		while(this_rules.hasNext()){
+			Rule_in_State current_rule = this_rules.next();
+			if(current_rule.get_follow() != null){
+				Iterator<String> follow_symbols = current_rule.get_follow().iterator();
+				while(follow_symbols.hasNext()){
+					String follow = follow_symbols.next();
+					if(return_rules.containsKey(follow)){
+						throw new Exception("Grammar is not SLR(1) grammar.");
+					}else{
+						return_rules.put(follow, current_rule.get_rule());	
+					}
+				}
+			}else{
+				if(grammar.getTerminals().contains(current_rule.get_pointer_element())){
+					if(return_rules.containsKey(current_rule.get_pointer_element())){
+						if(return_rules.get(current_rule.get_pointer_element()) != null){
+							throw new Exception("Grammar is not SLR(1) grammar.");							
+						}
+					}else{
+						return_rules.put(current_rule.get_pointer_element(), null);	
+					}
+				}
+			}
+		}
+		return return_rules;
 	}
 }
