@@ -107,11 +107,18 @@ public class State implements interfaces.State{
 	}
 	
 	public Rule_in_State get_unprocessed_rule(){
+		Iterator<Rule_in_State> this_rules = rules.iterator();
+		while(this_rules.hasNext()){
+			Rule_in_State current_rule = this_rules.next();
+			if(!current_rule.is_processed()){
+				return current_rule;
+			}
+		}
 		return null;
 	}
 	
 	public void add_rule(Rule rule) throws Exception{
-
+		rules.add(new Rule_in_State(rule, 0, this.grammar));
 	}
 	
 	public boolean contains_switch(String symbol){
