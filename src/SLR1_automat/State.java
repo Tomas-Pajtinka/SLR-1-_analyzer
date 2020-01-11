@@ -60,11 +60,31 @@ public class State implements interfaces.State{
 	}
 	
 	public State next_state(String symbol) throws Exception{
-		return null;
+		if(switches.containsKey(symbol)){
+			return switches.get(symbol);
+		}else{
+			throw new Exception("Prechod neexistuje.");
+		}
 	}
 	
 	public boolean compareTo(State state){		
-		return false;
+		Iterator<Rule_in_State> this_rules = rules.iterator();
+		int find_count = 0;
+		while(this_rules.hasNext()){
+			Iterator<Rule_in_State> param_rules = state.rules.iterator();
+			Rule_in_State this_rule = this_rules.next();
+			while(param_rules.hasNext()){
+				Rule_in_State param_rule = param_rules.next();
+				if(this_rule.compareTo(param_rule)){
+					find_count++;
+				}
+			}
+		}
+		if(find_count == rules.size() && state.rules.size() == rules.size()){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public void set_completed(){
