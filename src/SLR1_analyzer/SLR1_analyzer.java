@@ -38,9 +38,6 @@ public class SLR1_analyzer implements interfaces.SLR1_analyzer  {
 		}
 		analyzer_stack.push(states.get(0));
 		while(true){
-			if(input_stack.peekFirst().equals("e") ){
-				input_stack.removeFirst();
-			}
 			Rule rule;
 			try{
 			 rule = action_table.action(analyzer_stack.peek().get_name(), input_stack.peekFirst());
