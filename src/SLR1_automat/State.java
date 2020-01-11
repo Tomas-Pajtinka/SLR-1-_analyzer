@@ -34,15 +34,29 @@ public class State implements interfaces.State{
 	}
 	
 	public HashMap<String,ArrayList<Rule_in_State>> get_rules_of_next_state() throws Exception{
-		return null;
+		HashMap<String,ArrayList<Rule_in_State>> rules_of_next_state = new HashMap<String,ArrayList<Rule_in_State>>();
+		Iterator<Rule_in_State> this_rules = rules.iterator();
+		while(this_rules.hasNext()){
+			Rule_in_State current_rule = this_rules.next();
+			if(!current_rule.is_pointer_at_the_end()){
+				if(rules_of_next_state.containsKey(current_rule.get_pointer_element())){
+					rules_of_next_state.get(current_rule.get_pointer_element()).add(new Rule_in_State(current_rule.get_rule(), current_rule.get_next_pointer(), grammar));
+				}else{
+					ArrayList<Rule_in_State> rule_list = new ArrayList<Rule_in_State>();
+					rule_list.add(new Rule_in_State(current_rule.get_rule(), current_rule.get_next_pointer(), grammar));
+					rules_of_next_state.put(current_rule.get_pointer_element(), rule_list);
+				}
+			}
+		}
+		return rules_of_next_state;
 	}
 	
 	public HashMap<String,State> get_switches(){
-		return null;
+		return switches;
 	}
 	
 	public int get_name(){
-		return 0;
+		return name;
 	}
 	
 	public State next_state(String symbol) throws Exception{
