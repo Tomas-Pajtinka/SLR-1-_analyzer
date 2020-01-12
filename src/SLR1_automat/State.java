@@ -118,7 +118,15 @@ public class State implements interfaces.State{
 	}
 	
 	public void add_rule(Rule rule) throws Exception{
-		rules.add(new Rule_in_State(rule, 0, this.grammar));
+		Rule_in_State newRule = new Rule_in_State(rule, 0, this.grammar);
+		Iterator<Rule_in_State> this_rules = rules.iterator();
+		while(this_rules.hasNext()){
+			Rule_in_State current_rule = this_rules.next();
+			if(current_rule.compareTo(newRule)){
+				return;
+			}
+		}
+		rules.add(newRule);
 	}
 	
 	public boolean contains_switch(String symbol){
