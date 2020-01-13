@@ -92,15 +92,19 @@ public class Rule_in_State implements interfaces.Rule_in_State{
 	}
 	
 	public String get_pointer_element(){
-		return null;
+		return rule.getRightSide().get(pointer);
 	}
 	
 	public int get_next_pointer(){
-		return 0;
+		return pointer + 1;
 	}
 	
 	public boolean is_pointer_at_the_end(){
-		return false;
+		try{
+			rule.getRightSide().get(pointer);
+			return false;
+		}catch(Exception e){
+			return true;
+		}
 	}
-
 }
