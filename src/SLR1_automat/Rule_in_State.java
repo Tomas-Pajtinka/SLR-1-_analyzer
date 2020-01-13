@@ -57,29 +57,39 @@ public class Rule_in_State implements interfaces.Rule_in_State{
 	}
 	
 	public HashSet<String> get_follow(){
-		return null;
+		return follow;
 	}
 	
 	public Rule get_rule(){
-		return null;
+		return rule;
 	}
 	
 	public boolean compareTo(Rule_in_State rule_in_state){
-		return false;
+		if(this.rule.getLeftSide().equals(rule_in_state.rule.getLeftSide()) && this.rule.getRightSide().equals(rule_in_state.rule.getRightSide()) && this.pointer == rule_in_state.pointer){
+			 return true;
+		}else{
+			return false;
+		}
 	}
-	
 	public int get_pointer_index(){
-		return 0;
+		return pointer;
 	}
 	
 	public void set_processed(){
-		
+		this.processed = true;
 	}
 	
 	public boolean is_processed(){
-		return false;
+		return processed;
 	}
-
+	
+	private void set_follow() throws Exception{
+		try {
+			follow = FirstAndFollowClass.Follow(grammar, rule.getLeftSide().get(0));
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
 	
 	public String get_pointer_element(){
 		return null;
