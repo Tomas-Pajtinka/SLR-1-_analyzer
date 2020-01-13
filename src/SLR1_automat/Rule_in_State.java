@@ -22,13 +22,38 @@ public class Rule_in_State implements interfaces.Rule_in_State{
 	 * * @return Pravidlo v stave
 	 **/
 	public Rule_in_State(Rule rule, int pointer, ContextFreeGrammar grammar )throws Exception{
-		
-	}
-	
-	/** Priradi pravidlu mnozinu FOLLOW
-	 **/
-	private void set_follow() throws Exception{
-
+		this.rule = rule;
+		this.pointer = pointer;
+		this.grammar = grammar;
+		if(is_pointer_at_the_end()){
+			set_follow();
+			processed = true;
+		}else if(get_pointer_element().equals("e")){
+			this.pointer++;
+			set_follow();
+			processed = true;
+		}else if(rule.getLeftSide().get(0).equals(grammar.getStartsymbol())){
+			this.pointer++;
+			if(is_pointer_at_the_end()){
+				this.pointer--;
+				follow = new HashSet<String>();
+				if(grammar.getTerminals().contains(get_pointer_element())){
+					follow.add(get_pointer_element());
+					this.pointer++;
+					processed = true;
+				}else{
+					follow.addAll(FirstAndFollowClass.Follow(grammar, get_pointer_element()));
+				}
+			}else{
+				this.pointer--;
+			}
+		}else{
+			if(grammar.getNonterminals().contains(get_pointer_element())){
+				processed = false;
+			}else{
+				processed = true;
+			}
+		}
 	}
 	
 	public HashSet<String> get_follow(){
