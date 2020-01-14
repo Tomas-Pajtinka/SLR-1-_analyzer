@@ -1,8 +1,11 @@
 package SLR1_automat;
 
 import grammar.GrammarForAutomat;
+import grammar.Rule;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class SLR1 {
 
@@ -13,9 +16,15 @@ public class SLR1 {
 	public static ArrayList<State> automat(GrammarForAutomat grammar) throws Exception{
 		ArrayList<State> states = new ArrayList<State>();
 		int number_of_states = 0;
-		ArrayList<Rule_in_State> start_rule = new ArrayList<Rule_in_State>();
-		start_rule.add(new Rule_in_State(grammar.getStartrule(), 0, grammar));
-		State new_state = new State(number_of_states, start_rule, grammar);
+		ArrayList<Rule_in_State> start_rules = new ArrayList<Rule_in_State>();
+		Iterator<Rule> rules = grammar.getRules().iterator();
+		while(rules.hasNext()){
+			Rule rule = rules.next();
+			if(rule.getLeftSide().get(0).equals(grammar.getStartsymbol())){
+				start_rules.add(new Rule_in_State(rule, 0, grammar));
+			}
+		}
+		State new_state = new State(number_of_states, start_rules, grammar);
 		Closure0.closure(new_state, grammar);
 		states.add(new_state);
 		number_of_states++;
