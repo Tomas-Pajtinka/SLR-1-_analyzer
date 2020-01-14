@@ -1,7 +1,6 @@
 package SLR1_automat;
 
-import grammar.ContextFreeGrammar;
-
+import grammar.GrammarForAutomat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,7 +10,7 @@ public class SLR1 {
 	 * * @param gramatika
 	 * * @return ArrayList obsahujuci zoznam stavov
 	 **/
-	public static ArrayList<State> automat(ContextFreeGrammar grammar) throws Exception{
+	public static ArrayList<State> automat(GrammarForAutomat grammar) throws Exception{
 		ArrayList<State> states = new ArrayList<State>();
 		int number_of_states = 0;
 		ArrayList<Rule_in_State> start_rule = new ArrayList<Rule_in_State>();

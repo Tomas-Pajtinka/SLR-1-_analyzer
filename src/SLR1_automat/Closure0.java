@@ -2,7 +2,7 @@ package SLR1_automat;
 
 import java.util.Iterator;
 
-import grammar.ContextFreeGrammar;
+import grammar.GrammarForAutomat;
 import grammar.Rule;
 
 public class Closure0 {
@@ -11,7 +11,7 @@ public class Closure0 {
 	 * * @param stav, ktory sa ma uzavriet
 	 * * @param gramatika
 	 **/
-	public static void closure(State state, ContextFreeGrammar grammar) throws Exception{
+	public static void closure(State state, GrammarForAutomat grammar) throws Exception{
 		while(state.has_unprocessed_rules()){
 			Rule_in_State rule = state.get_unprocessed_rule();
 			String nonterminal = rule.get_pointer_element();

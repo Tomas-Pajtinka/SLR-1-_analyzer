@@ -1,9 +1,10 @@
 package SLR1_automat;
 
-import grammar.ContextFreeGrammar;
+
+import grammar.GrammarForAutomat;
 import grammar.Rule;
 import java.util.HashSet;
-import FirstandFollow.FirstAndFollowClass;
+
 
 
 public class Rule_in_State implements interfaces.Rule_in_State{
@@ -12,7 +13,7 @@ public class Rule_in_State implements interfaces.Rule_in_State{
 	private int pointer;
 	private HashSet<String> follow;
 	private boolean processed;
-	private ContextFreeGrammar grammar;
+	private GrammarForAutomat grammar;
 	
 	/** Vytvori pravidlo v stave a sucasne mi urci mnozinu follow (pokial je to potrebne. to znamena, 
 	 * ze bolo nacitane cele pravidlo alebo je to zaciatocne pravidlo gramatiky a chyba mu posledny symbol do rozpoznania)
@@ -21,14 +22,14 @@ public class Rule_in_State implements interfaces.Rule_in_State{
 	 * * @param gramatika
 	 * * @return Pravidlo v stave
 	 **/
-	public Rule_in_State(Rule rule, int pointer, ContextFreeGrammar grammar )throws Exception{
+	public Rule_in_State(Rule rule, int pointer, GrammarForAutomat grammar )throws Exception{
 		this.rule = rule;
 		this.pointer = pointer;
 		this.grammar = grammar;
 		if(is_pointer_at_the_end()){
 			set_follow();
 			processed = true;
-		}else if(get_pointer_element().equals("e")){
+		}else if(get_pointer_element().equals(grammar.getEpsilon())){
 			this.pointer++;
 			set_follow();
 			processed = true;
@@ -39,11 +40,11 @@ public class Rule_in_State implements interfaces.Rule_in_State{
 				follow = new HashSet<String>();
 				if(grammar.getTerminals().contains(get_pointer_element())){
 					follow.add(get_pointer_element());
-					this.pointer++;
-					processed = true;
 				}else{
-					follow.addAll(FirstAndFollowClass.Follow(grammar, get_pointer_element()));
+					follow.addAll(grammar.follow(get_pointer_element()));
 				}
+				this.pointer++;
+				processed = true;
 			}else{
 				this.pointer--;
 			}
@@ -85,7 +86,7 @@ public class Rule_in_State implements interfaces.Rule_in_State{
 	
 	private void set_follow() throws Exception{
 		try {
-			follow = FirstAndFollowClass.Follow(grammar, rule.getLeftSide().get(0));
+			follow = grammar.follow(rule.getLeftSide().get(0));
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}

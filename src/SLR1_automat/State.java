@@ -1,9 +1,12 @@
 package SLR1_automat;
 
-import grammar.ContextFreeGrammar;
+
+import grammar.GrammarForAutomat;
 import grammar.Rule;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+
 import SLR1_automat.Rule_in_State;
 
 public class State implements interfaces.State{
@@ -12,14 +15,14 @@ public class State implements interfaces.State{
 	private ArrayList<Rule_in_State> rules = new ArrayList<Rule_in_State>();
 	private HashMap<String,State>  switches = new HashMap<String,State>();
 	private boolean completed = false;
-	private ContextFreeGrammar grammar;
+	private GrammarForAutomat grammar;
 	
 	/** Vytvori stav
 	 * * @param int (meno stavu)
 	 * * @param  ArrayList (Rule)
 	 * * @return gramatika
 	 **/
-	public State(int name, ArrayList<Rule_in_State> rules, ContextFreeGrammar grammar){
+	public State(int name, ArrayList<Rule_in_State> rules, GrammarForAutomat grammar){
 		this.name = name;
 		this.rules = rules;
 		this.grammar = grammar;

@@ -2,10 +2,6 @@ package SLR1_analyzer;
 
 import grammar.GrammarForAutomat;
 import grammar.Rule;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Tree {
