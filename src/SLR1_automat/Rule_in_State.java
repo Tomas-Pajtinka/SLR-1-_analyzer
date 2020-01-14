@@ -22,50 +22,89 @@ public class Rule_in_State implements interfaces.Rule_in_State{
 	 * * @return Pravidlo v stave
 	 **/
 	public Rule_in_State(Rule rule, int pointer, ContextFreeGrammar grammar )throws Exception{
-		
-	}
-	
-	/** Priradi pravidlu mnozinu FOLLOW
-	 **/
-	private void set_follow() throws Exception{
-
+		this.rule = rule;
+		this.pointer = pointer;
+		this.grammar = grammar;
+		if(is_pointer_at_the_end()){
+			set_follow();
+			processed = true;
+		}else if(get_pointer_element().equals("e")){
+			this.pointer++;
+			set_follow();
+			processed = true;
+		}else if(rule.getLeftSide().get(0).equals(grammar.getStartsymbol())){
+			this.pointer++;
+			if(is_pointer_at_the_end()){
+				this.pointer--;
+				follow = new HashSet<String>();
+				if(grammar.getTerminals().contains(get_pointer_element())){
+					follow.add(get_pointer_element());
+					this.pointer++;
+					processed = true;
+				}else{
+					follow.addAll(FirstAndFollowClass.Follow(grammar, get_pointer_element()));
+				}
+			}else{
+				this.pointer--;
+			}
+		}else{
+			if(grammar.getNonterminals().contains(get_pointer_element())){
+				processed = false;
+			}else{
+				processed = true;
+			}
+		}
 	}
 	
 	public HashSet<String> get_follow(){
-		return null;
+		return follow;
 	}
 	
 	public Rule get_rule(){
-		return null;
+		return rule;
 	}
 	
 	public boolean compareTo(Rule_in_State rule_in_state){
-		return false;
+		if(this.rule.getLeftSide().equals(rule_in_state.rule.getLeftSide()) && this.rule.getRightSide().equals(rule_in_state.rule.getRightSide()) && this.pointer == rule_in_state.pointer){
+			 return true;
+		}else{
+			return false;
+		}
 	}
-	
 	public int get_pointer_index(){
-		return 0;
+		return pointer;
 	}
 	
 	public void set_processed(){
-		
+		this.processed = true;
 	}
 	
 	public boolean is_processed(){
-		return false;
+		return processed;
 	}
-
+	
+	private void set_follow() throws Exception{
+		try {
+			follow = FirstAndFollowClass.Follow(grammar, rule.getLeftSide().get(0));
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
 	
 	public String get_pointer_element(){
-		return null;
+		return rule.getRightSide().get(pointer);
 	}
 	
 	public int get_next_pointer(){
-		return 0;
+		return pointer + 1;
 	}
 	
 	public boolean is_pointer_at_the_end(){
-		return false;
+		try{
+			rule.getRightSide().get(pointer);
+			return false;
+		}catch(Exception e){
+			return true;
+		}
 	}
-
 }
